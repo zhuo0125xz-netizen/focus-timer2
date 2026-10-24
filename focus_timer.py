@@ -1,6 +1,6 @@
 # Focus Timer
-# A timer for study and rest with Start, Pause, Resume and Reset
-# I put all the reference links at the end
+# This is my focus timer for study and rest. Functions: Start, Pause, Resume and Reset
+# I put all the reference links at the end of this file
 
 #
 # My code has three sections
@@ -12,7 +12,7 @@
 
 import tkinter as tk
 
-second_remains = 0
+second_remaining = 0
 resting_time = 0
 
 status_of_the_timer = "Ready"
@@ -24,8 +24,8 @@ should_deduct_seconds = False
 
 def display_timer_time():
     # I keep the time in seconds, so here I change it to minutes and seconds for the screen
-    m = second_remains // 60  # whole minutes
-    s = second_remains % 60  # leftover seconds
+    m = second_remaining // 60  # whole minutes
+    s = second_remaining % 60  # use % to show leftover seconds
 
     show_the_timing.config(text=str(m) + ":" + str(s))
     show_the_staging.config(text=status_of_the_timer)
@@ -65,18 +65,18 @@ def user_input(input_status):
 def time_pass_tick():
     # These timer values are outside the function, so I use global to change the same values
     # Without global the assignment would make a local name inside this function
-    global second_remains, status_of_the_timer, should_deduct_seconds
+    global second_remaining, status_of_the_timer, should_deduct_seconds
 
     if should_deduct_seconds:  # when this is False the time stays the same
-        second_remains = second_remains - 1
+        second_remaining = second_remaining - 1
 
-        if second_remains == 0:
+        if second_remaining == 0:
             window.bell()  # sound when Study or Rest ends
 
             # Once Study reaches zero I change it to Rest and use the rest time from the boxes
             if status_of_the_timer == "Study":
                 status_of_the_timer = "Rest"
-                second_remains = resting_time
+                second_remaining = resting_time
 
             else:
                 # Rest has ended too, so I stop counting and the Pause button is no longer needed
@@ -95,7 +95,7 @@ def time_pass_tick():
 
 def start_my_timer():
     # I change the shared values here so the countdown can use the new times
-    global second_remains, resting_time, status_of_the_timer, should_deduct_seconds
+    global second_remaining, resting_time, status_of_the_timer, should_deduct_seconds
 
     if status_of_the_timer != "Ready":  # I use Reset first if a session has already started
         return
@@ -107,7 +107,7 @@ def start_my_timer():
         show_the_staging.config(text="Enter whole numbers. Seconds must be 0-59. Both times must be above zero.")
         return
 
-    second_remains = t1
+    second_remaining = t1
     resting_time = t2
 
     status_of_the_timer = "Study"
@@ -138,10 +138,10 @@ def pause_or_resume():
 
 def reset():
     # Reset stops the countdown and puts it back to Ready, it does not start Rest
-    global second_remains, status_of_the_timer, should_deduct_seconds
+    global second_remaining, status_of_the_timer, should_deduct_seconds
 
     should_deduct_seconds = False
-    second_remains = 0
+    second_remaining = 0
     status_of_the_timer = "Ready"
 
     # I let the user type again and keep the numbers already in the boxes for another session
